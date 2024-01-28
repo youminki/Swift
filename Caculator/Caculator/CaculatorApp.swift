@@ -1,14 +1,14 @@
 //
-//  CalculatorApp.swift
-//  Calculator
+//  CaculatorApp.swift
+//  Caculator
 //
-//  Created by 유민기 on 2024/01/27.
+//  Created by 유민기 on 2024/01/28.
 //
 
 import SwiftUI
 
 @main
-struct CalculatorApp: App {
+struct CaculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
