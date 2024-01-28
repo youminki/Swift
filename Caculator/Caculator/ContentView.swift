@@ -84,7 +84,7 @@ struct ContentView: View {
         [.seventh,.eighth, .nineth, .multiple],
         [.forth, .fifth, .sixth, .minus],
         [.first, .second, .third, .plus],
-        [.zero, .zero, .dot, .equal],
+        [.zero, .dot, .equal],
     ]
     
     var body: some View {
@@ -106,13 +106,27 @@ struct ContentView: View {
                         ForEach(line, id: \.self){ item in
                             Button{
                                 if totalNumber == "0"{
-                                    totalNumber = "1"
+                                    if item == .clear{
+                                        totalNumber = "0"
+                                    } else if item == .plus ||
+                                                item == .minus ||
+                                                item == .multiple ||
+                                                item == .devide{
+                                        totalNumber = "Error"
+                                    }
+                                    else{
+                                        totalNumber = item.ButtonDisplayName
+                                    }
                                 } else {
-                                    totalNumber += "1"
+                                    if item == .clear{
+                                        totalNumber = "0"
+                                    } else{
+                                        totalNumber += item.ButtonDisplayName
+                                    }
                                 }
                             } label:{
                                 Text(item.ButtonDisplayName)
-                                    .frame(width: 80, height: 80)
+                                    .frame(width: item == .some(.zero) ? 160 : 80, height: 80)
                                     .background(item.backgrandColor)
                                     .cornerRadius(40)
                                     .foregroundColor(item.forgroundClor)
