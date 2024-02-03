@@ -78,6 +78,8 @@ enum ButtonType: String{
 struct ContentView: View {
     
     @State private var totalNumber: String = "0"
+    @State var tempNumber: Int = 0 //숫자를 저장할 공간
+    @State var opperatorType: ButtonType = .clear
     
     private let buttonData: [[ButtonType]] = [
         [.clear, .opposite, .percent, .devide],
@@ -108,19 +110,48 @@ struct ContentView: View {
                                 if totalNumber == "0"{
                                     if item == .clear{
                                         totalNumber = "0"
-                                    } else if item == .plus ||
+                                    } else if   item == .opposite ||
+                                                item == .percent ||
+                                                item == .plus ||
                                                 item == .minus ||
                                                 item == .multiple ||
-                                                item == .devide{
+                                                item == .devide ||
+                                                item == .equal{
                                         totalNumber = "Error"
                                     }
                                     else{
                                         totalNumber = item.ButtonDisplayName
                                     }
+                                } else if totalNumber == "Error" {
+                                    if item == .clear{
+                                        totalNumber = "0"
+                                    }
                                 } else {
                                     if item == .clear{
                                         totalNumber = "0"
-                                    } else{
+                                    }
+                                    else if item == .plus{
+                                        // 1. 숫자를 저장
+                                        // 2. 저장한 숫자를 더한다.
+                                        // 3. 남은 숫자를 초기화 한다.
+                                        tempNumber = Int(totalNumber) ?? 0 //플러스를 눌렀을 때 입력한 숫자를 tempNumber에 저장한다 만약 숫자가 아니라면 0이 출력되게 한다.
+                                        opperatorType = .plus
+                                        totalNumber = "0" // 남은 숫자를 0으로 초기화한다. 이걸 안하면 플러스 버튼을 누르고 다음 버튼을 눌렀을 때 덧붙여지기 때문이다.
+                                    }
+                                    else if item == .minus{
+                                        tempNumber = Int(totalNumber) ?? 0
+                                        opperatorType = .minus
+                                        totalNumber = "0"
+                                    }
+                                    else if item == .equal{
+                                        if opperatorType == .plus{
+                                            totalNumber = String((Int(totalNumber) ?? 0) + tempNumber)
+                                        }
+                                        else if opperatorType == .minus{
+                                            totalNumber = String(tempNumber - (Int(totalNumber) ?? 0))
+                                        }
+                                    }
+                                    else{
                                         totalNumber += item.ButtonDisplayName
                                     }
                                 }
